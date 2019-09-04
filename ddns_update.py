@@ -40,7 +40,8 @@ class DdnsClient(object):
         self.ip = self._getCurrentIpRecord()
 
     def _getNewPublicIp(self):
-        url = "http://ifconfig.me/all.json"
+        # url = "http://ifconfig.me/all.json"
+        url = "http://httpbin.org/ip"
         try:
             response = requests.request("GET", url, timeout=5)
         except Exception as err:
@@ -51,7 +52,13 @@ class DdnsClient(object):
         if response.status_code != 200:
             self.logger.error('Error - http request error of getLocalPublicIp not 200')
             raise RuntimeError('Error - http request error of getLocalPublicIp not 200')
-        publicIp = response.json().get('ip_addr', '')
+        # publicIp = response.json().get('ip_addr', '')
+        publicIp = response.json().get('origin', '')
+        publicIp = publicIp.split(',')
+        if not publicIp:
+            self.logger.error('Error - new public ip acquiring failed')
+            raise RuntimeError('Error - new public ip acquiring failed')
+        publicIp = publicIp[0]
         self.logger.info('public ip acquired - {}'.format(publicIp))
         return publicIp
 
@@ -118,4 +125,5 @@ class DdnsClient(object):
 
 if __name__ == "__main__":
     nc = DdnsClient(RR, DOMAIN_NAME)
+    # nc._getNewPublicIp()
     nc.updateRecord()
