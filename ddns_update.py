@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 __author__ = "fisherworks.cn"
 
 import sys
@@ -58,7 +59,7 @@ class DdnsClient(object):
             response = requests.request("GET", url, timeout=5)
         except Exception as err:
             self.logger.error('Error - http request error of getLocalPublicIp - {}'.format(err))
-            raise RuntimeError(unicode(err))
+            raise RuntimeError(err)
             # return ''
 
         if response.status_code != 200:
@@ -96,7 +97,7 @@ class DdnsClient(object):
             records = json.loads(response).get('DomainRecords', {}).get('Record', [])
         except Exception as err:
             self.logger.error('Error - aliyun core sdk error of getIpRecord - {}'.format(err))
-            raise RuntimeError(unicode(err))
+            raise RuntimeError(err)
         record = next((r for r in records if r.get('RR', '') == self.rr), None)
         if not record:
             self.logger.info('Aliyun ip record NOT FOUND, need to set the new one')
@@ -133,7 +134,7 @@ class DdnsClient(object):
             response = client.do_action_with_exception(request)
         except Exception as err:
             self.logger.error('Error - aliyun core sdk error of addIpRecord - {}'.format(err))
-            raise RuntimeError(unicode(err))
+            raise RuntimeError(err)
 
         self.logger.info('Aliyun ip record set done - {}'.format(response))
         return response
@@ -163,7 +164,7 @@ class DdnsClient(object):
             response = client.do_action_with_exception(request)
         except Exception as err:
             self.logger.error('Error - aliyun core sdk error of setNewIpRecord - {}'.format(err))
-            raise RuntimeError(unicode(err))
+            raise RuntimeError(err)
 
         self.logger.info('Aliyun ip record set done - {}'.format(response))
         return response
