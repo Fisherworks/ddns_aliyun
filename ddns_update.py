@@ -3,7 +3,7 @@
 __author__ = "fisherworks.cn"
 
 import sys
-import requests, json, logging, logging.handlers
+import os, requests, json, logging, logging.handlers
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
 
@@ -186,8 +186,9 @@ class DdnsClient(object):
 
 if __name__ == "__main__":
     logger = loggerGenerator('ddns_client')
+    dirPath = os.path.dirname(os.path.realpath(__file__))
     try:
-        with open('config.json', 'r') as fp:
+        with open(os.path.join(dirPath, 'config.json'), 'r') as fp:
             config = json.load(fp)
     except Exception as err:
         logger.error('config file error - {}'.format(err))
