@@ -54,7 +54,7 @@ class DdnsClient(object):
         :return: your public ip, in string
         """
         # url = "http://ifconfig.me/all.json"
-        url = "http://httpbin.org/ip"
+        url = "https://cn.ipcelou.com/api/ip"
         try:
             response = requests.request("GET", url, timeout=5)
         except Exception as err:
@@ -66,12 +66,10 @@ class DdnsClient(object):
             self.logger.error('Error - http request error of getLocalPublicIp not 200')
             raise RuntimeError('Error - http request error of getLocalPublicIp not 200')
         # publicIp = response.json().get('ip_addr', '')
-        publicIp = response.json().get('origin', '')
-        publicIp = publicIp.split(',')
+        publicIp = response.json().get('data', {}).get('Remote_addr', '')
         if not publicIp:
             self.logger.error('Error - new public ip acquiring failed')
             raise RuntimeError('Error - new public ip acquiring failed')
-        publicIp = publicIp[0]
         self.logger.info('My public ip acquired - {}'.format(publicIp))
         return publicIp
 
