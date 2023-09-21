@@ -2,7 +2,7 @@ aliyun-python-sdk-core==2.13.36
 certifi==2023.7.22
 cffi==1.14.5
 chardet==4.0.0
-cryptography==41.0.3
+cryptography==41.0.4
 enum34==1.1.10
 idna==2.10
 ipaddress==1.0.23
